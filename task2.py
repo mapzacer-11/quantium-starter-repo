@@ -11,7 +11,11 @@ for file in files:
     df = pd.read_csv(file)
     
     # Keep only Pink Morsels
-    df = df[df["product"] == "Pink Morsel"]
+    df["product"] = df["product"].str.strip()
+    df = df[df["product"].str.lower() == "pink morsel"]
+
+    df["price"] = df["price"].replace(r"[\$,]", "", regex=True).astype(float)
+    df["quantity"] = df["quantity"].astype(float)
     
     # Create sales column
     df["sales"] = df["quantity"] * df["price"]
